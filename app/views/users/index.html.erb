@@ -1,0 +1,68 @@
+<%= render Shared::Breadcrumb::Component.new(
+  options: [{ title: 'Users', url: users_path }],
+  last_option: 'Index'
+) %>
+
+<div class="flex border border-gray-200 dark:border-gray-800 rounded-lg overflow-x-auto">
+  <table class="shadow-2xl text-normal lg:text-sm rounded-lg shadow-xs w-full">
+    <thead>
+      <tr class="tracking-wide text-left text-gray-500 border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+        <td class="px-4 py-3">Profile</td>
+        <td class="px-4 py-3">Email</td>
+        <td class="px-4 py-3">Phone Number</td>
+        <td class="px-4 py-3 text-center">Gender</td>
+        <td class="px-4 py-3 text-center">Status</td>
+        <td class="px-4 py-3 text-center">Created at</td>
+        <td class="px-4 py-3 text-center">Updated at</td>
+        <td class="px-4 py-3 text-center">Actions</td>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+      <% @users.each do |user| %>
+        <tr class="text-gray-700 dark:text-gray-400">
+          <td class="px-4 py-3">
+            <div>
+              <p class="font-semibold"><%= user.name %></p>
+              <p class="text-xs text-gray-600 dark:text-gray-400">
+                <%= user.username %>
+              </p>
+            </div>
+          </td>
+          <td class="px-4 py-3">
+            <%= user.email %>
+          </td>
+          <td class="px-4 py-3">
+            <%= user.phone_number %>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <%= user.gender || 'N / A' %>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <% status_class = user.confirmed? ? 'text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100' : 'text-red-700 bg-red-100 dark:bg-red-700 dark:text-red-100' %>
+            <% status_name = user.confirmed? ? 'Active' : 'Inactive' %>
+            <span class="px-2 py-1 rounded-full text-center <%= status_class %>">
+              <%= status_name %>
+            </span>
+          </td>
+          <td class="px-4 py-3">
+            <%= Formatter.date(user.created_at) %>
+          </td>
+          <td class="px-4 py-3">
+            <%= Formatter.date(user.updated_at) %>
+          </td>
+          <td class="p-4 flex justify-center gap-4">
+            <%= link_to user_path(user.id), class: 'text-cyan-600 hover:text-cyan-700' do %>
+              <i class="fa-solid fa-eye"></i>
+            <% end %>
+            <%= link_to edit_user_path(user.id), class: 'text-cyan-600 hover:text-cyan-700' do %>
+              <i class="fa-solid fa-pen-to-square"></i>
+            <% end %>
+            <%= link_to user_path(user.id), data: { turbo_method: :delete, confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, class: 'text-cyan-600 hover:text-cyan-700' do %>
+              <i class="fa-solid fa-trash-can"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

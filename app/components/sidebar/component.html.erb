@@ -1,0 +1,21 @@
+<aside class="fixed top-0 left-0 bg-gray-100 shadow-md dark:bg-gray-800 h-screen pt-10 z-20 hidden w-64 overflow-y-auto md:block flex-shrink-0">
+  <div class="py-4 text-gray-500 dark:text-gray-400">
+    <ul>
+      <% sidebar_options.each do |menu| %>
+        <% if menu[:menu_items] %>
+          <%= render Sidebar::SubMenu::Component.new(name: menu[:title], links: menu[:menu_items], fa_icon: menu[:fa_icon]) %>
+        <% else %>
+          <%= Sidebar::MenuLink::Component.new(link: menu[:url], name: menu[:title], fa_icon: menu[:fa_icon]).call %>
+        <% end %>
+      <% end %>
+    </ul>
+    <div class="px-6 my-6">
+      <button class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-cyan-600 border border-transparent rounded-lg active:bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:shadow-outline-cyan">
+        Create account
+        <span class="ml-2" aria-hidden="true">+</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<%= Backdrop::Component.new(name: 'sidebar', z_class: 'z-10').call %>
